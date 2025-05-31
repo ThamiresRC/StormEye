@@ -1,0 +1,156 @@
+
+# 🌪️ StormEye API - Sistema de Alerta de Catástrofes Naturais
+
+Este projeto é uma aplicação desenvolvida em **Java Spring Boot** com persistência em banco **H2 em memória**, cujo objetivo é permitir o **cadastro, consulta e gerenciamento de alertas de catástrofes naturais**, como tempestades, terremotos e inundações. Também há um sistema de **autenticação JWT**, separando usuários do tipo `admin` para realizar operações sensíveis.
+
+---
+
+## 📁 Estrutura do Projeto
+
+- `model` — Entidades principais como Alerta, Cidade, Catástrofe, Login e Administrador  
+- `dto` — Objetos de transferência de dados (ex: LoginRequestDTO, CadastroLoginDTO, AlertaDTO)  
+- `repository` — Interfaces JPA para persistência  
+- `service` — Lógica de negócio  
+- `controller` — Rotas da API  
+- `config` — Configurações de segurança e seed de dados  
+- `specification` — Filtros dinâmicos para buscas avançadas  
+- `security` — Filtro de autenticação JWT  
+- `resources/application.properties` — Configurações do H2, Swagger, JWT, etc.
+
+---
+
+## ⚙️ Tecnologias Utilizadas
+
+- Java 17
+- Spring Boot 3.5
+- Spring Security
+- Spring Data JPA
+- H2 Database
+- JWT (Auth0)
+- Swagger / OpenAPI 3.0
+- Lombok
+- Maven
+
+---
+
+## 🔐 Autenticação
+
+A autenticação é feita via **JWT Token**, e um usuário padrão é criado automaticamente:
+
+```json
+{
+  "usuario": "admin",
+  "senha": "1234"
+}
+```
+
+Ao logar, um token será retornado e **deve ser usado nas próximas requisições** com o prefixo:
+
+```
+Authorization: Bearer <token>
+```
+
+---
+
+## 📦 Seed de Dados
+
+O projeto já cria automaticamente os seguintes registros no banco de dados H2:
+
+- 6 cidades (Houston, Daca, Oklahoma City, etc.)
+- 6 catástrofes naturais
+- 1 login padrão (`admin / 1234`)
+- 1 administrador associado ao login
+
+---
+
+## 🚀 Como Rodar o Projeto Localmente
+
+1. **Clone o projeto:**
+
+```bash
+git clone https://github.com/seu-usuario/stormeye.git
+cd stormeye
+```
+
+2. **Execute o projeto com Maven:**
+
+```bash
+./mvnw spring-boot:run
+```
+
+3. **Acesse o Swagger:**
+
+```
+http://localhost:8080/swagger-ui.html
+```
+
+4. **Console do H2:**
+
+```
+http://localhost:8080/h2-console
+```
+
+- JDBC URL: `jdbc:h2:mem:stormeye`  
+- User: `admlnx`  
+- Password: `Fiap@2tdsvms`
+
+---
+
+## 📖 Endpoints Principais
+
+### Autenticação
+
+- `POST /auth/login` → retorna o JWT  
+- `POST /auth/cadastro` → cria novo login
+
+### Cidades
+
+- `GET /cidades`
+- `POST /cidades`
+- `PUT /cidades/{id}`
+- `DELETE /cidades/{id}`
+
+### Catástrofes
+
+- `GET /catastrofes`
+- `POST /catastrofes`
+- `PUT /catastrofes/{id}`
+- `DELETE /catastrofes/{id}`
+
+### Alertas
+
+- `GET /alertas`
+- `POST /alertas`
+- `PUT /alertas/{id}`
+- `DELETE /alertas/{id}`
+
+---
+
+## 📋 Requisitos Atendidos
+
+- [x] Autenticação JWT
+- [x] CRUD completo de entidades
+- [x] Swagger documentando todos os endpoints
+- [x] Banco H2 com dados automáticos (seeder)
+- [x] Separação clara de responsabilidades (MVC)
+- [x] Filtros e specifications para buscas dinâmicas
+
+---
+
+## 🧪 Testes Recomendados no Swagger
+
+1. `POST /auth/login` com `admin` / `1234`  
+2. Copie o token e teste as rotas protegidas (`/alertas`, `/cidades`, etc.)  
+3. Cadastre novas catástrofes ou cidades  
+4. Teste a atualização e remoção de alertas
+
+---
+
+## 👨‍💻 Desenvolvedor
+
+- Pedro Henrique Martins dos Reis  
+- RA: [SEU RA AQUI]  
+- Curso: 2TDS - FIAP  
+- Projeto desenvolvido para a disciplina de Global Solution - Fevereiro 2025
+
+---
