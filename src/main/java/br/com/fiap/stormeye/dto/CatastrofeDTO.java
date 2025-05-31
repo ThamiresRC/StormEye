@@ -4,10 +4,15 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CatastrofeDTO {
+
     private Long id;
 
     @NotBlank
@@ -21,4 +26,8 @@ public class CatastrofeDTO {
     @Min(1)
     @Max(5)
     private int nivelGravidade;
+
+    @NotBlank
+    @Size(max = 100)
+    private String localizacao;
 }

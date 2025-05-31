@@ -1,5 +1,6 @@
 package br.com.fiap.stormeye.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,10 +23,12 @@ public class Catastrofe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_catastrofe")
     private Long id;
 
     @NotBlank
     @Size(max = 100)
+    @Column(name = "nome_catastrofe")
     private String nome;
 
     @NotBlank
@@ -34,5 +37,10 @@ public class Catastrofe {
 
     @Min(1)
     @Max(5)
+    @Column(name = "nivel_gravidade")
     private int nivelGravidade;
+
+    @NotBlank
+    @Size(max = 100)
+    private String localizacao;
 }

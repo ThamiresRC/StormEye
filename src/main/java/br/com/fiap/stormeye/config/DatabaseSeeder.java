@@ -35,14 +35,14 @@ public class DatabaseSeeder {
             cidadeRepository.save(new Cidade(null, "Tóquio", "Japão"));
         }
 
-        // Popula catástrofes
+        // Popula catástrofes com localização
         if (catastrofeRepository.count() == 0) {
-            catastrofeRepository.save(new Catastrofe(null, "Tempestade Severa", "Descrição de tempestade severa", 3));
-            catastrofeRepository.save(new Catastrofe(null, "Inundação", "Descrição de inundação", 4));
-            catastrofeRepository.save(new Catastrofe(null, "Tornado", "Descrição de tornado", 5));
-            catastrofeRepository.save(new Catastrofe(null, "Granizo", "Descrição de granizo", 2));
-            catastrofeRepository.save(new Catastrofe(null, "Vento Forte", "Descrição de vento forte", 3));
-            catastrofeRepository.save(new Catastrofe(null, "Terremoto", "Descrição de terremoto", 5));
+            catastrofeRepository.save(new Catastrofe(null, "Tempestade Severa", "Descrição de tempestade severa", 3, "Houston"));
+            catastrofeRepository.save(new Catastrofe(null, "Inundação", "Descrição de inundação", 4, "Daca"));
+            catastrofeRepository.save(new Catastrofe(null, "Tornado", "Descrição de tornado", 5, "Oklahoma City"));
+            catastrofeRepository.save(new Catastrofe(null, "Granizo", "Descrição de granizo", 2, "Denver"));
+            catastrofeRepository.save(new Catastrofe(null, "Vento Forte", "Descrição de vento forte", 3, "Wellington"));
+            catastrofeRepository.save(new Catastrofe(null, "Terremoto", "Descrição de terremoto", 5, "Tóquio"));
         }
 
         // Cria login e administrador fixos

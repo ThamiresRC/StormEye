@@ -46,14 +46,16 @@ public class CatastrofeController {
         return toDTO(service.buscarPorId(id));
     }
 
-    @PutMapping("/{id}")
+   @PutMapping("/{id}")
     public CatastrofeDTO atualizar(@PathVariable Long id, @RequestBody @Valid CatastrofeDTO dto) {
-        var catastrofe = service.buscarPorId(id);
-        catastrofe.setNome(dto.getNome());
-        catastrofe.setDescricao(dto.getDescricao());
-        catastrofe.setNivelGravidade(dto.getNivelGravidade());
-        return toDTO(service.salvar(catastrofe));
-    }
+    var catastrofe = service.buscarPorId(id);
+    catastrofe.setNome(dto.getNome());
+    catastrofe.setDescricao(dto.getDescricao());
+    catastrofe.setNivelGravidade(dto.getNivelGravidade());
+    catastrofe.setLocalizacao(dto.getLocalizacao());
+    return toDTO(service.salvar(catastrofe));
+}
+
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
@@ -70,10 +72,12 @@ public class CatastrofeController {
     }
 
     private Catastrofe toModel(CatastrofeDTO dto) {
-        var catastrofe = new Catastrofe();
-        catastrofe.setNome(dto.getNome());
-        catastrofe.setDescricao(dto.getDescricao());
-        catastrofe.setNivelGravidade(dto.getNivelGravidade());
-        return catastrofe;
-    }
+    Catastrofe catastrofe = new Catastrofe();
+    catastrofe.setNome(dto.getNome());
+    catastrofe.setDescricao(dto.getDescricao());
+    catastrofe.setNivelGravidade(dto.getNivelGravidade());
+    catastrofe.setLocalizacao(dto.getLocalizacao());
+    return catastrofe;
+}
+
 }
