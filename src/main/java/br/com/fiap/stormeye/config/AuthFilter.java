@@ -23,22 +23,34 @@ public class AuthFilter extends OncePerRequestFilter {
     private final LoginRepository loginRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+protected void doFilterInternal(HttpServletRequest request,
+                                HttpServletResponse response,
+                                FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            String usuario = tokenService.validateToken(token);
-            var login = loginRepository.findByUsuario(usuario);
-            if (login.isPresent()) {
-                var user = login.get();
-                var auth = new UsernamePasswordAuthenticationToken(user, null, null);
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-        }
+    // URLs públicas que não precisam de autenticação
+    String path = request.getRequestURI();
+
+    if (path.startsWith("/auth/") || 
+        path.startsWith("/v3/api-docs/") || 
+        path.startsWith("/swagger-ui") || 
+        path.startsWith("/h2-console")) {
         filterChain.doFilter(request, response);
+        return;  // Ignora o filtro para rotas públicas
     }
+
+    String authHeader = request.getHeader("Authorization");
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        String token = authHeader.substring(7);
+        String usuario = tokenService.validateToken(token);
+        var login = loginRepository.findByUsuario(usuario);
+        if (login.isPresent()) {
+            var user = login.get();
+            var auth = new UsernamePasswordAuthenticationToken(user, null, null);
+            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+    }
+
+    filterChain.doFilter(request, response);
+}
 }

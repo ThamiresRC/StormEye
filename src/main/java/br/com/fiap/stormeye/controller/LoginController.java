@@ -1,5 +1,6 @@
 package br.com.fiap.stormeye.controller;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,21 +12,25 @@ import br.com.fiap.stormeye.repository.LoginRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequestMapping("/logins")
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginRepository repository;
+    private final BCryptPasswordEncoder encoder;
 
-    @PostMapping
+
+   @PostMapping
     public String criarLogin(@RequestBody @Valid CadastroLoginDTO loginDTO) {
-        Login login = new Login();
-        login.setUsuario(loginDTO.getUsuario());
-        login.setSenha(loginDTO.getSenha());
-        login.setTipoUsuario(loginDTO.getTipoUsuario());
-        repository.save(login);
+    Login login = new Login();
+    login.setUsuario(loginDTO.getUsuario());
+    login.setSenha(encoder.encode(loginDTO.getSenha())); 
+    login.setTipoUsuario(loginDTO.getTipoUsuario());
+    repository.save(login);
 
-        return "Login criado com sucesso!";
-    }
+    return "Login criado com sucesso!";
+}
+
 }
