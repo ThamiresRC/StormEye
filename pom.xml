@@ -9,7 +9,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>br.com.fiap</groupId>
@@ -64,6 +64,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Hibernate Core para suporte a Oracle Dialect -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
         <!-- JWT para autenticação -->
         <dependency>
             <groupId>com.auth0</groupId>
@@ -96,7 +102,6 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
