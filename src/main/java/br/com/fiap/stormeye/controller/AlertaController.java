@@ -16,8 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.stormeye.dto.AlertaDTO;
+import br.com.fiap.stormeye.model.Administrador;
 import br.com.fiap.stormeye.model.Alerta;
+import br.com.fiap.stormeye.model.Catastrofe;
+import br.com.fiap.stormeye.model.Cidade;
+import br.com.fiap.stormeye.service.AdministradorService;
 import br.com.fiap.stormeye.service.AlertaService;
+import br.com.fiap.stormeye.service.CatastrofeService;
+import br.com.fiap.stormeye.service.CidadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -26,14 +32,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AlertaController {
 
-    private final AlertaService service;
+    private final AlertaService alertaService;
+    private final CidadeService cidadeService;
+    private final CatastrofeService catastrofeService;
+    private final AdministradorService administradorService;
 
     @PostMapping
     public AlertaDTO criar(@RequestBody @Valid Alerta alerta) {
-        return toDTO(service.salvar(alerta));
+        // Buscar entidades relacionadas pelos seus IDs
+        Cidade cidade = cidadeService.buscarPorId(alerta.getCidade().getId());
+        Catastrofe catastrofe = catastrofeService.buscarPorId(alerta.getCatastrofe().getId());
+        Administrador admin = administradorService.buscarPorId(alerta.getAdministrador().getId());
+
+        alerta.setCidade(cidade);
+        alerta.setCatastrofe(catastrofe);
+        alerta.setAdministrador(admin);
+
+        return toDTO(alertaService.salvar(alerta));
     }
 
-   @GetMapping
+    @GetMapping
     public Page<AlertaDTO> listar(
         @RequestParam(required = false) String cidade,
         @RequestParam(required = false) String catastrofe,
@@ -42,23 +60,31 @@ public class AlertaController {
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fim,
         Pageable pageable) {
 
-    return service.listar(cidade, catastrofe, nivelGravidade, inicio, fim, pageable).map(this::toDTO);
-}
-
+        return alertaService.listar(cidade, catastrofe, nivelGravidade, inicio, fim, pageable)
+                .map(this::toDTO);
+    }
 
     @GetMapping("/{id}")
     public AlertaDTO buscarPorId(@PathVariable Long id) {
-        return toDTO(service.buscarPorId(id));
+        return toDTO(alertaService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     public AlertaDTO atualizar(@PathVariable Long id, @RequestBody @Valid Alerta alerta) {
-        return toDTO(service.atualizar(id, alerta));
+        Cidade cidade = cidadeService.buscarPorId(alerta.getCidade().getId());
+        Catastrofe catastrofe = catastrofeService.buscarPorId(alerta.getCatastrofe().getId());
+        Administrador admin = administradorService.buscarPorId(alerta.getAdministrador().getId());
+
+        alerta.setCidade(cidade);
+        alerta.setCatastrofe(catastrofe);
+        alerta.setAdministrador(admin);
+
+        return toDTO(alertaService.atualizar(id, alerta));
     }
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
-        service.deletar(id);
+        alertaService.deletar(id);
     }
 
     private AlertaDTO toDTO(Alerta alerta) {
@@ -69,9 +95,9 @@ public class AlertaController {
         dto.setNivelGravidade(alerta.getNivelGravidade());
         dto.setDataAlerta(alerta.getDataAlerta());
         dto.setFimAlerta(alerta.getFimAlerta());
-        dto.setCidade(alerta.getCidade().getNome());
-        dto.setCatastrofe(alerta.getCatastrofe().getNome());
-        dto.setAdministrador(alerta.getAdministrador().getNome());
+        dto.setCidade(alerta.getCidade() != null ? alerta.getCidade().getNome() : null);
+        dto.setCatastrofe(alerta.getCatastrofe() != null ? alerta.getCatastrofe().getNome() : null);
+        dto.setAdministrador(alerta.getAdministrador() != null ? alerta.getAdministrador().getNome() : null);
         return dto;
     }
 }

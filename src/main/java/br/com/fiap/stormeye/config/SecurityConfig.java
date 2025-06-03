@@ -17,16 +17,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-            .csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
-    }
+    return http
+        .csrf(csrf -> csrf.disable())
+        .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/h2-console/**").permitAll()
+            .requestMatchers("/administradores/**", "/cidades/**", "/catastrofes/**", "/alertas/**").hasRole("ADMIN") // apenas admin
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
+}
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

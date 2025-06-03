@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.stormeye.dto.AdministradorDTO;
 import br.com.fiap.stormeye.model.Administrador;
+import br.com.fiap.stormeye.model.Login;
 import br.com.fiap.stormeye.service.AdministradorService;
+import br.com.fiap.stormeye.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class AdministradorController {
 
     private final AdministradorService service;
+    private final LoginService loginService;
 
     @PostMapping
     public AdministradorDTO criar(@RequestBody @Valid AdministradorDTO dto) {
@@ -52,16 +55,24 @@ public class AdministradorController {
         service.deletar(id);
     }
 
+    // Conversão para DTO
     private AdministradorDTO toDTO(Administrador admin) {
         AdministradorDTO dto = new AdministradorDTO();
         dto.setId(admin.getId());
         dto.setNome(admin.getNome());
+        dto.setLoginId(admin.getLogin().getId());
         return dto;
     }
 
+    // Conversão para Model com associação ao Login
     private Administrador toModel(AdministradorDTO dto) {
         var admin = new Administrador();
         admin.setNome(dto.getNome());
+
+        // Busca o login com base no ID enviado
+        Login login = loginService.buscarPorId(dto.getLoginId());
+        admin.setLogin(login);
+
         return admin;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fiap.stormeye.dto.ClienteDTO;
 import br.com.fiap.stormeye.model.Cliente;
 import br.com.fiap.stormeye.service.ClienteService;
+import br.com.fiap.stormeye.service.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ClienteController {
 
     private final ClienteService service;
+    private final LoginService loginService;
 
     @PostMapping
     public ClienteDTO criar(@RequestBody @Valid ClienteDTO dto) {
@@ -45,6 +47,10 @@ public class ClienteController {
         var cliente = service.buscarPorId(id);
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
+
+        var login = loginService.buscarPorId(dto.getLoginId());
+        cliente.setLogin(login);
+
         return toDTO(service.salvar(cliente));
     }
 
@@ -58,6 +64,7 @@ public class ClienteController {
         dto.setId(cliente.getId());
         dto.setNome(cliente.getNome());
         dto.setCpf(cliente.getCpf());
+        dto.setLoginId(cliente.getLogin().getId());
         return dto;
     }
 
@@ -65,6 +72,10 @@ public class ClienteController {
         var cliente = new Cliente();
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
+
+        var login = loginService.buscarPorId(dto.getLoginId());
+        cliente.setLogin(login);
+
         return cliente;
     }
 }

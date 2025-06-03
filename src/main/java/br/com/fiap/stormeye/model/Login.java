@@ -1,5 +1,6 @@
 package br.com.fiap.stormeye.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +24,7 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true) 
     @NotBlank
     @Size(max = 50)
     private String usuario;
@@ -35,3 +37,4 @@ public class Login {
     @Size(max = 10)
     private String tipoUsuario;
 }
+  

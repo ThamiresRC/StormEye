@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import br.com.fiap.stormeye.model.Login;
 
@@ -23,10 +24,14 @@ public class TokenService {
             .sign(Algorithm.HMAC256(SECRET_KEY));
     }
 
-    public String validateToken(String token) {
-        return JWT.require(Algorithm.HMAC256(SECRET_KEY))
+    public TokenData validateToken(String token) {
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(SECRET_KEY))
             .build()
-            .verify(token)
-            .getSubject();
+            .verify(token);
+
+        String usuario = decodedJWT.getSubject();
+        String tipoUsuario = decodedJWT.getClaim("tipoUsuario").asString();
+
+        return new TokenData(usuario, tipoUsuario);
     }
 }
