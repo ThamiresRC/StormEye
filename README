@@ -1,156 +1,137 @@
+🌪️ StormEye API - Back-end
+“Nós não temos um produto. Nós temos segundas chances.”
+StormEye é um sistema completo para alertas de desastres naturais e educação em situações de sobrevivência, desenvolvido com foco em salvar vidas. Com esta API, administradores podem cadastrar alertas em tempo real, enquanto usuários acessam informações claras e organizadas sobre como agir em diferentes catástrofes.
 
-# 🌪️ StormEye API - Sistema de Alerta de Catástrofes Naturais
+🧠 Motivação Global Solution
+“A cada segundo, vidas são afetadas por desastres. O StormEye surge como um farol, guiando pessoas com informação clara, rápida e que pode salvar vidas.”
 
-Este projeto é uma aplicação desenvolvida em **Java Spring Boot** com persistência em banco **H2 em memória**, cujo objetivo é permitir o **cadastro, consulta e gerenciamento de alertas de catástrofes naturais**, como tempestades, terremotos e inundações. Também há um sistema de **autenticação JWT**, separando usuários do tipo `admin` para realizar operações sensíveis.
 
----
+👨‍💻 Integrantes do Projeto
+Thamires Ribeiro Cruz (RM558128)
+Adonay Rodrigues da Rocha (RM558782)
+Pedro Henrique Martins dos Reis (RM555306)
 
-## 📁 Estrutura do Projeto
 
-- `model` — Entidades principais como Alerta, Cidade, Catástrofe, Login e Administrador  
-- `dto` — Objetos de transferência de dados (ex: LoginRequestDTO, CadastroLoginDTO, AlertaDTO)  
-- `repository` — Interfaces JPA para persistência  
-- `service` — Lógica de negócio  
-- `controller` — Rotas da API  
-- `config` — Configurações de segurança e seed de dados  
-- `specification` — Filtros dinâmicos para buscas avançadas  
-- `security` — Filtro de autenticação JWT  
-- `resources/application.properties` — Configurações do H2, Swagger, JWT, etc.
+🔧 Tecnologias Utilizadas
+Java 17
+Spring Boot
+Spring Data JPA
+Spring Security + JWT
+MySQL / Oracle
+Swagger (OpenAPI)
+Lombok
 
----
 
-## ⚙️ Tecnologias Utilizadas
+🛠️ Funcionalidades da API
+ Cadastro de logins (usuários admin ou cliente)
+ Autenticação com JWT (login e geração de token)
+ CRUD de Administradores
+ CRUD de Clientes
+ CRUD de Cidades
+ CRUD de Catástrofes
+ CRUD de Alertas (relacionando todos os itens acima)
+ Filtro de alertas por cidade, tipo, gravidade e período
+ Documentação via Swagger
 
-- Java 17
-- Spring Boot 3.5
-- Spring Security
-- Spring Data JPA
-- H2 Database
-- JWT (Auth0)
-- Swagger / OpenAPI 3.0
-- Lombok
-- Maven
 
----
+🔐 Autenticação
+Endpoint de login: POST /auth/login
+Token: Deve ser enviado via header Authorization: Bearer {token}
+Usuários do tipo admin podem realizar todas as operações. O token já garante as permissões de acesso.
 
-## 🔐 Autenticação
 
-A autenticação é feita via **JWT Token**, e um usuário padrão é criado automaticamente:
+🔗 Documentação (Swagger)
+Após rodar o projeto, acesse: http://localhost:8080/swagger-ui/index.html
 
-```json
+
+📦 Como Rodar Localmente
+
+1. Clone o repositório:
+git clone https://github.com/ThamiresRC/StormEye.git
+cd StormEye
+
+2. Configure o banco de dados
+Crie um banco MySQL com nome stormeye e configure o application-prod.properties:
+spring.datasource.url=jdbc:mysql://localhost:3306/stormeye
+spring.datasource.username=root
+spring.datasource.password=admin
+
+⚠️ Pode utilizar Oracle ou o H2 também, ajustando a URL e o dialeto conforme necessário.
+
+4. Acesse o Swagger
+http://localhost:8080/swagger-ui/index.html
+
+
+💡 Exemplo de JSON para Testes
+
+Criar um Login:
+POST /auth/register
+
 {
   "usuario": "admin",
-  "senha": "1234"
+  "senha": "123",
+  "tipoUsuario": "admin"
 }
-```
 
-Ao logar, um token será retornado e **deve ser usado nas próximas requisições** com o prefixo:
+Login:
+POST /auth/login
 
-```
-Authorization: Bearer <token>
-```
+{
+  "usuario": "admin",
+  "senha": "123"
+}
 
----
 
-## 📦 Seed de Dados
+Criar Catástrofe:
+POST /catastrofes
 
-O projeto já cria automaticamente os seguintes registros no banco de dados H2:
+{
+  "nome": "Tornado",
+  "descricao": "Ventos muito fortes em espiral.",
+  "nivelGravidade": 4
+}
 
-- 6 cidades (Houston, Daca, Oklahoma City, etc.)
-- 6 catástrofes naturais
-- 1 login padrão (`admin / 1234`)
-- 1 administrador associado ao login
 
----
+Criar Cidade:
 
-## 🚀 Como Rodar o Projeto Localmente
+POST /cidades
 
-1. **Clone o projeto:**
+{
+  "nome": "São Paulo",
+  "estado": "SP"
+}
 
-```bash
-git clone https://github.com/seu-usuario/stormeye.git
-cd stormeye
-```
 
-2. **Execute o projeto com Maven:**
+Criar Administrador:
 
-```bash
-./mvnw spring-boot:run
-```
+POST /administradores
 
-3. **Acesse o Swagger:**
+{
+  "nome": "Fernanda",
+  "loginId": 1
+}
 
-```
-http://localhost:8080/swagger-ui.html
-```
 
-4. **Console do H2:**
+Criar Alerta:
 
-```
-http://localhost:8080/h2-console
-```
+POST /alertas
 
-- JDBC URL: `jdbc:h2:mem:stormeye`  
-- User: `admlnx`  
-- Password: `Fiap@2tdsvms`
+{
+  "headline": "Tornado a caminho",
+  "descricao": "Evacuar área central imediatamente.",
+  "dataAlerta": "2025-06-03T10:00:00",
+  "fimAlerta": "2025-06-03T20:00:00",
+  "nivelGravidade": 4,
+  "cidade": {
+    "id": 1
+  },
+  "catastrofe": {
+    "id": 1
+  },
+  "administrador": {
+    "id": 1
+  }
+}
 
----
 
-## 📖 Endpoints Principais
 
-### Autenticação
-
-- `POST /auth/login` → retorna o JWT  
-- `POST /auth/cadastro` → cria novo login
-
-### Cidades
-
-- `GET /cidades`
-- `POST /cidades`
-- `PUT /cidades/{id}`
-- `DELETE /cidades/{id}`
-
-### Catástrofes
-
-- `GET /catastrofes`
-- `POST /catastrofes`
-- `PUT /catastrofes/{id}`
-- `DELETE /catastrofes/{id}`
-
-### Alertas
-
-- `GET /alertas`
-- `POST /alertas`
-- `PUT /alertas/{id}`
-- `DELETE /alertas/{id}`
-
----
-
-## 📋 Requisitos Atendidos
-
-- [x] Autenticação JWT
-- [x] CRUD completo de entidades
-- [x] Swagger documentando todos os endpoints
-- [x] Banco H2 com dados automáticos (seeder)
-- [x] Separação clara de responsabilidades (MVC)
-- [x] Filtros e specifications para buscas dinâmicas
-
----
-
-## 🧪 Testes Recomendados no Swagger
-
-1. `POST /auth/login` com `admin` / `1234`  
-2. Copie o token e teste as rotas protegidas (`/alertas`, `/cidades`, etc.)  
-3. Cadastre novas catástrofes ou cidades  
-4. Teste a atualização e remoção de alertas
-
----
-
-## 👨‍💻 Desenvolvedor
-
-- Pedro Henrique Martins dos Reis  
-- RA: [SEU RA AQUI]  
-- Curso: 2TDS - FIAP  
-- Projeto desenvolvido para a disciplina de Global Solution - Fevereiro 2025
-
----
