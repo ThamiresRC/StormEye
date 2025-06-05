@@ -64,12 +64,12 @@ public class AdministradorController {
         return dto;
     }
 
-    // Conversão para Model com associação ao Login
+    
     private Administrador toModel(AdministradorDTO dto) {
-        var admin = new Administrador();
+        Administrador admin = new Administrador();
         admin.setNome(dto.getNome());
 
-        // Busca o login com base no ID enviado
+       
         Login login = loginService.buscarPorId(dto.getLoginId());
         admin.setLogin(login);
 

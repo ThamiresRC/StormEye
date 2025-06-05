@@ -25,7 +25,6 @@ public class DatabaseSeeder {
 
     @PostConstruct
     public void seed() {
-        // Popula cidades
         if (cidadeRepository.count() == 0) {
             cidadeRepository.save(new Cidade(null, "Houston", "EUA"));
             cidadeRepository.save(new Cidade(null, "Daca", "Bangladesh"));
@@ -35,7 +34,6 @@ public class DatabaseSeeder {
             cidadeRepository.save(new Cidade(null, "Tóquio", "Japão"));
         }
 
-        // Popula catástrofes com localização
         if (catastrofeRepository.count() == 0) {
             catastrofeRepository.save(new Catastrofe(null, "Tempestade Severa", "Descrição de tempestade severa", 3, "Houston"));
             catastrofeRepository.save(new Catastrofe(null, "Inundação", "Descrição de inundação", 4, "Daca"));
@@ -45,7 +43,6 @@ public class DatabaseSeeder {
             catastrofeRepository.save(new Catastrofe(null, "Terremoto", "Descrição de terremoto", 5, "Tóquio"));
         }
 
-        // Cria login e administrador fixos
         if (loginRepository.count() == 0) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 

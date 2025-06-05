@@ -39,7 +39,7 @@ public class AlertaController {
 
     @PostMapping
     public AlertaDTO criar(@RequestBody @Valid Alerta alerta) {
-        // Buscar entidades relacionadas pelos seus IDs
+        
         Cidade cidade = cidadeService.buscarPorId(alerta.getCidade().getId());
         Catastrofe catastrofe = catastrofeService.buscarPorId(alerta.getCatastrofe().getId());
         Administrador admin = administradorService.buscarPorId(alerta.getAdministrador().getId());
