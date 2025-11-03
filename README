@@ -1,141 +1,164 @@
-🌪️ StormEye API - Back-end
-“Nós não temos um produto. Nós temos segundas chances.”
-StormEye é um sistema completo para alertas de desastres naturais e educação em situações de sobrevivência, desenvolvido com foco em salvar vidas. Com esta API, administradores podem cadastrar alertas em tempo real, enquanto usuários acessam informações claras e organizadas sobre como agir em diferentes catástrofes.
+# 🌪️ StormEye API - Back-end
 
-🧠 Motivação Global Solution
-“A cada segundo, vidas são afetadas por desastres. O StormEye surge como um farol, guiando pessoas com informação clara, rápida e que pode salvar vidas.”
+> “Nós não temos um produto. Nós temos segundas chances.”
 
-- ⛈️ Alertas em tempo real sobre desastres naturais
-- 📚 Cartilhas de sobrevivencialismo disponíveis offline
-- 📱 Aplicativo mobile com interface intuitiva
-- 🧭 Informações essenciais para aventuras, trilhas e situações de risco
+StormEye é um sistema completo para **alertas de desastres naturais** e **educação em situações de sobrevivência**, desenvolvido com foco em **salvar vidas**.  
+Com esta API, **administradores** podem cadastrar alertas em tempo real, enquanto **usuários** acessam informações claras e organizadas sobre como agir em diferentes catástrofes.
 
-👨‍💻 Integrantes do Projeto
-Thamires Ribeiro Cruz (RM558128)
-Adonay Rodrigues da Rocha (RM558782)
-Pedro Henrique Martins dos Reis (RM555306)
+---
 
+## 🧠 Motivação Global Solution
 
-🔧 Tecnologias Utilizadas
-Java 17
-Spring Boot
-Spring Data JPA
-Spring Security + JWT
-MySQL / Oracle
-Swagger (OpenAPI)
-Lombok
+> “A cada segundo, vidas são afetadas por desastres. O StormEye surge como um farol, guiando pessoas com informação clara, rápida e que pode salvar vidas.”
 
+### Principais Destaques
+- ⛈️ Alertas em tempo real sobre desastres naturais  
+- 📚 Cartilhas de sobrevivencialismo disponíveis offline  
+- 📱 Aplicativo mobile com interface intuitiva  
+- 🧭 Informações essenciais para aventuras, trilhas e situações de risco  
 
-🛠️ Funcionalidades da API
- Cadastro de logins (usuários admin ou cliente)
- Autenticação com JWT (login e geração de token)
- CRUD de Administradores
- CRUD de Clientes
- CRUD de Cidades
- CRUD de Catástrofes
- CRUD de Alertas (relacionando todos os itens acima)
- Filtro de alertas por cidade, tipo, gravidade e período
- Documentação via Swagger
+---
 
+## 👨‍💻 Integrantes do Projeto
 
-🔐 Autenticação
-Endpoint de login: POST /auth/login
-Token: Deve ser enviado via header Authorization: Bearer {token}
-Usuários do tipo admin podem realizar todas as operações. O token já garante as permissões de acesso.
+| Nome | RM |
+|------|----|
+| Thamires Ribeiro Cruz | RM558128 |
+| Adonay Rodrigues da Rocha | RM558782 |
+| Pedro Henrique Martins dos Reis | RM555306 |
 
+---
 
-🔗 Documentação (Swagger)
-Após rodar o projeto, acesse: http://localhost:8080/swagger-ui/index.html
+## 🔧 Tecnologias Utilizadas
 
+- **Java 17**
+- **Spring Boot**
+- **Spring Data JPA**
+- **Spring Security + JWT**
+- **MySQL / Oracle**
+- **Swagger (OpenAPI)**
+- **Lombok**
 
-📦 Como Rodar Localmente
+---
 
-1. Clone o repositório:
+## 🛠️ Funcionalidades da API
+
+- Cadastro de logins (usuários admin ou cliente)  
+- Autenticação com JWT (login e geração de token)  
+- CRUD de Administradores  
+- CRUD de Clientes  
+- CRUD de Cidades  
+- CRUD de Catástrofes  
+- CRUD de Alertas (relacionando todos os itens acima)  
+- Filtro de alertas por cidade, tipo, gravidade e período  
+- Documentação via Swagger  
+
+---
+
+## 🔐 Autenticação
+
+- **Endpoint de login:** `POST /auth/login`  
+- **Token:** deve ser enviado via header  
+  `Authorization: Bearer {token}`  
+
+Usuários do tipo **admin** podem realizar todas as operações.  
+O token já garante as permissões de acesso.
+
+---
+
+## 🔗 Documentação (Swagger)
+
+Após rodar o projeto, acesse:  
+👉 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+---
+
+## 📦 Como Rodar Localmente
+
+```bash
+# 1. Clone o repositório
 git clone https://github.com/ThamiresRC/StormEye.git
 cd StormEye
 
-2. Configure o banco de dados
-Crie um banco MySQL com nome stormeye e configure o application-prod.properties:
+# 2. Configure o banco de dados (MySQL)
+# Crie um banco chamado stormeye e edite o arquivo application-prod.properties:
+
 spring.datasource.url=jdbc:mysql://localhost:3306/stormeye
 spring.datasource.username=root
 spring.datasource.password=admin
 
-⚠️ Pode utilizar Oracle ou o H2 também, ajustando a URL e o dialeto conforme necessário.
+# ⚠️ Você também pode usar Oracle ou H2, ajustando a URL e o dialeto.
+```
 
-4. Acesse o Swagger
-http://localhost:8080/swagger-ui/index.html
+Após iniciar o projeto, acesse novamente o Swagger em:  
+👉 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
+---
 
-💡 Exemplo de JSON para Testes
+## 💡 Exemplos de JSON para Testes
 
-Criar um Login:
+### Criar Login
+```json
 POST /auth/register
-
 {
   "usuario": "admin",
   "senha": "123",
   "tipoUsuario": "admin"
 }
+```
 
-Login:
+### Login
+```json
 POST /auth/login
-
 {
   "usuario": "admin",
   "senha": "123"
 }
+```
 
-
-Criar Catástrofe:
+### Criar Catástrofe
+```json
 POST /catastrofes
-
 {
   "nome": "Tornado",
   "descricao": "Ventos muito fortes em espiral.",
   "nivelGravidade": 4
 }
+```
 
-
-Criar Cidade:
-
+### Criar Cidade
+```json
 POST /cidades
-
 {
   "nome": "São Paulo",
   "estado": "SP"
 }
+```
 
-
-Criar Administrador:
-
+### Criar Administrador
+```json
 POST /administradores
-
 {
   "nome": "Fernanda",
   "loginId": 1
 }
+```
 
-
-Criar Alerta:
-
+### Criar Alerta
+```json
 POST /alertas
-
 {
   "headline": "Tornado a caminho",
   "descricao": "Evacuar área central imediatamente.",
   "dataAlerta": "2025-06-03T10:00:00",
   "fimAlerta": "2025-06-03T20:00:00",
   "nivelGravidade": 4,
-  "cidade": {
-    "id": 1
-  },
-  "catastrofe": {
-    "id": 1
-  },
-  "administrador": {
-    "id": 1
-  }
+  "cidade": { "id": 1 },
+  "catastrofe": { "id": 1 },
+  "administrador": { "id": 1 }
 }
+```
 
+---
 
-
+📘 **StormEye API — Desenvolvido com propósito, tecnologia e empatia.**
