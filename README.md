@@ -98,64 +98,250 @@ Após iniciar o projeto, acesse novamente o Swagger em:
 ## 💡 Exemplos de JSON para Testes
 
 ### Criar Login
+## 🌪️ Entidade: Catástrofe
+
+### 🟢 POST `/catastrofes`
+Cria uma nova catástrofe.
+
+**Exemplo de Requisição**
 ```json
-POST /auth/register
 {
-  "usuario": "admin",
-  "senha": "123",
-  "tipoUsuario": "admin"
+  "nome": "Tempestade Elétrica",
+  "descricao": "Descargas elétricas intensas e risco de alagamento.",
+  "nivelGravidade": 3,
+  "localizacao": "Campinas - SP"
 }
 ```
 
-### Login
+**Resposta (201 Created)**
 ```json
-POST /auth/login
 {
-  "usuario": "admin",
-  "senha": "123"
+  "id_catastrofe": 1,
+  "nome": "Tempestade Elétrica",
+  "descricao": "Descargas elétricas intensas e risco de alagamento.",
+  "nivelGravidade": 3,
+  "localizacao": "Campinas - SP"
 }
 ```
 
-### Criar Catástrofe
+---
+
+### 🔵 GET `/catastrofes`
+Retorna todas as catástrofes cadastradas.
+
+**Resposta (200 OK)**
 ```json
-POST /catastrofes
+[
+  {
+    "id_catastrofe": 1,
+    "nome": "Tempestade Elétrica",
+    "descricao": "Descargas elétricas intensas e risco de alagamento.",
+    "nivelGravidade": 3,
+    "localizacao": "Campinas - SP"
+  },
+  {
+    "id_catastrofe": 2,
+    "nome": "Tornado Litoral Norte",
+    "descricao": "Ventos fortes e destruição parcial de casas.",
+    "nivelGravidade": 4,
+    "localizacao": "Ubatuba - SP"
+  }
+]
+```
+
+---
+
+### 🟡 GET `/catastrofes/{id}`
+Retorna uma catástrofe específica pelo ID.
+
+**Exemplo**
+```
+GET /catastrofes/1
+```
+
+**Resposta (200 OK)**
+```json
 {
-  "nome": "Tornado",
-  "descricao": "Ventos muito fortes em espiral.",
-  "nivelGravidade": 4
+  "id_catastrofe": 1,
+  "nome": "Tempestade Elétrica",
+  "descricao": "Descargas elétricas intensas e risco de alagamento.",
+  "nivelGravidade": 3,
+  "localizacao": "Campinas - SP"
 }
 ```
 
-### Criar Cidade
+---
+
+### 🟠 PUT `/catastrofes/{id}`
+Atualiza uma catástrofe existente.
+
+**Exemplo**
+```
+PUT /catastrofes/1
+```
+
+**Corpo da Requisição**
 ```json
-POST /cidades
 {
-  "nome": "São Paulo",
-  "estado": "SP"
+  "nome": "Tempestade Elétrica (Atualizada)",
+  "descricao": "Descargas elétricas moderadas, situação controlada.",
+  "nivelGravidade": 2,
+  "localizacao": "Campinas - SP"
 }
 ```
 
-### Criar Administrador
+**Resposta (200 OK)**
 ```json
-POST /administradores
 {
-  "nome": "Fernanda",
-  "loginId": 1
+  "mensagem": "Catástrofe atualizada com sucesso."
 }
 ```
 
-### Criar Alerta
+---
+
+### 🔴 DELETE `/catastrofes/{id}`
+Remove uma catástrofe pelo ID.
+
+**Exemplo**
+```
+DELETE /catastrofes/1
+```
+
+**Resposta (200 OK)**
 ```json
-POST /alertas
 {
-  "headline": "Tornado a caminho",
-  "descricao": "Evacuar área central imediatamente.",
-  "dataAlerta": "2025-06-03T10:00:00",
-  "fimAlerta": "2025-06-03T20:00:00",
+  "mensagem": "Catástrofe removida com sucesso."
+}
+```
+
+---
+
+## ⚠️ Entidade: Alerta
+
+### 🟢 POST `/alertas`
+Cria um novo alerta vinculado a uma catástrofe.
+
+**Exemplo de Requisição**
+```json
+{
+  "headline": "Alerta de Enchente",
+  "descricao": "Ruas alagadas e risco de transbordamento de rios.",
   "nivelGravidade": 4,
-  "cidade": { "id": 1 },
-  "catastrofe": { "id": 1 },
-  "administrador": { "id": 1 }
+  "dataAlerta": "2025-11-04T03:00:00Z",
+  "fimAlerta": "2025-11-04T09:00:00Z",
+  "catastrofeId": 1,
+  "cidadeId": 1,
+  "adminId": 1
+}
+```
+
+**Resposta (201 Created)**
+```json
+{
+  "id": 1,
+  "headline": "Alerta de Enchente",
+  "descricao": "Ruas alagadas e risco de transbordamento de rios.",
+  "nivelGravidade": 4,
+  "dataAlerta": "2025-11-04T03:00:00Z",
+  "fimAlerta": "2025-11-04T09:00:00Z",
+  "catastrofeId": 1,
+  "cidadeId": 1,
+  "adminId": 1
+}
+```
+
+---
+
+### 🔵 GET `/alertas`
+Retorna todos os alertas cadastrados.
+
+**Resposta (200 OK)**
+```json
+[
+  {
+    "id": 1,
+    "headline": "Alerta de Enchente",
+    "descricao": "Ruas alagadas e risco de transbordamento de rios.",
+    "nivelGravidade": 4,
+    "dataAlerta": "2025-11-04T03:00:00Z",
+    "fimAlerta": "2025-11-04T09:00:00Z",
+    "catastrofeId": 1,
+    "cidadeId": 1,
+    "adminId": 1
+  }
+]
+```
+
+---
+
+### 🟡 GET `/alertas/{id}`
+Retorna um alerta específico pelo ID.
+
+**Exemplo**
+```
+GET /alertas/1
+```
+
+**Resposta (200 OK)**
+```json
+{
+  "id": 1,
+  "headline": "Alerta de Enchente",
+  "descricao": "Ruas alagadas e risco de transbordamento de rios.",
+  "nivelGravidade": 4,
+  "dataAlerta": "2025-11-04T03:00:00Z",
+  "fimAlerta": "2025-11-04T09:00:00Z",
+  "catastrofeId": 1,
+  "cidadeId": 1,
+  "adminId": 1
+}
+```
+
+---
+
+### 🟠 PUT `/alertas/{id}`
+Atualiza um alerta existente.
+
+**Exemplo**
+```
+PUT /alertas/1
+```
+
+**Corpo da Requisição**
+```json
+{
+  "headline": "Alerta de Enchente (Atualizado)",
+  "descricao": "Situação controlada, risco reduzido.",
+  "nivelGravidade": 2,
+  "dataAlerta": "2025-11-04T03:00:00Z",
+  "fimAlerta": "2025-11-04T12:00:00Z",
+  "catastrofeId": 1,
+  "cidadeId": 1,
+  "adminId": 1
+}
+```
+
+**Resposta (200 OK)**
+```json
+{
+  "mensagem": "Alerta atualizado com sucesso."
+}
+```
+
+---
+
+### 🔴 DELETE `/alertas/{id}`
+Remove um alerta existente pelo ID.
+
+**Exemplo**
+```
+DELETE /alertas/1
+```
+
+**Resposta (200 OK)**
+```json
+{
+  "mensagem": "Alerta removido com sucesso."
 }
 ```
 
